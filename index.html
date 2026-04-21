@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Volodymyr Shpodarunok — Founder & Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Outfit', 'sans-serif'] } } }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Outfit', sans-serif; background: #09090b; color: #fafafa; overflow-x: hidden; margin: 0; }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: #09090b; }
+    ::-webkit-scrollbar-thumb { background: #34d399; border-radius: 2px; }
+
+    .grain::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.022;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1), transform 0.75s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.in { opacity: 1; transform: none; }
+    .rd1 { transition-delay: 0.08s; }
+    .rd2 { transition-delay: 0.16s; }
+    .rd3 { transition-delay: 0.24s; }
+    .rd4 { transition-delay: 0.32s; }
+
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .marquee-track { display: flex; animation: marquee 38s linear infinite; white-space: nowrap; }
+
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+    .floater { animation: float 6s ease-in-out infinite; }
+
+    @keyframes pdot { 0%,100% { opacity:1;transform:scale(1); } 50% { opacity:.45;transform:scale(.65); } }
+    .pdot { animation: pdot 2.2s ease-in-out infinite; }
+
+    @keyframes shimmer { 0% { background-position:-200% center; } 100% { background-position:200% center; } }
+    .em-text {
+      background: linear-gradient(90deg,#34d399 0%,#6ee7b7 45%,#34d399 85%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3.5s linear infinite;
+    }
+
+    .nav-glass {
+      background: rgba(9,9,11,0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(39,39,42,0.55);
+    }
+
+    .btn-em {
+      background: #34d399; color: #09090b;
+      font-weight: 700; font-size: .875rem;
+      padding: .55rem 1.35rem; border-radius: 999px;
+      display: inline-flex; align-items: center; gap: .4rem;
+      transition: background .2s, transform .15s cubic-bezier(.16,1,.3,1);
+      text-decoration: none;
+    }
+    .btn-em:hover { background: #6ee7b7; }
+    .btn-em:active { transform: scale(.97) translateY(1px); }
+
+    .btn-ghost {
+      color: #a1a1aa; font-size: .875rem;
+      padding: .55rem 1rem; border-radius: 999px;
+      border: 1px solid #27272a;
+      transition: color .2s, border-color .2s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-ghost:hover { color: #fafafa; border-color: #52525b; }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .72rem; font-weight: 500;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: #34d399; margin-bottom: .875rem;
+    }
+
+    .stat-cell {
+      padding: 2rem 2.5rem;
+      border-right: 1px solid #1f1f23;
+      border-bottom: 1px solid #1f1f23;
+      transition: background .2s;
+    }
+    .stat-cell:hover { background: rgba(52,211,153,.04); }
+
+    .proj {
+      background: #111113; border: 1px solid #1f1f23;
+      border-radius: 1.5rem; overflow: hidden;
+      transition: transform .35s cubic-bezier(.16,1,.3,1), border-color .3s, box-shadow .35s;
+    }
+    .proj:hover {
+      transform: translateY(-4px);
+      border-color: rgba(52,211,153,.22);
+      box-shadow: 0 22px 44px -12px rgba(52,211,153,.12);
+    }
+
+    .tag {
+      display: inline-block; padding: .22rem .75rem; border-radius: 999px;
+      font-size: .72rem; border: 1px solid #27272a; color: #71717a;
+      transition: all .18s;
+    }
+    .tag:hover { border-color: #34d399; color: #34d399; background: rgba(52,211,153,.07); }
+
+    .photo-box { overflow: hidden; border-radius: 1.2rem; position: relative; }
+    .photo-box img { width:100%; height:100%; object-fit:cover; transition: transform .6s cubic-bezier(.16,1,.3,1); display:block; }
+    .photo-box:hover img { transform: scale(1.04); }
+
+    .row-link {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 1.4rem; border: 1px solid #1f1f23; border-radius: 1rem;
+      background: #111113; transition: border-color .25s, background .25s;
+      text-decoration: none;
+    }
+    .row-link:hover { border-color: rgba(52,211,153,.28); background: #141416; }
+
+    .tl-row {
+      position: relative; padding-left: 1.875rem; padding-bottom: 2rem;
+      border-left: 1px solid #1f1f23;
+    }
+    .tl-row::before {
+      content: ''; position: absolute; left: -1px; top: .35rem;
+      width: 7px; height: 7px; border-radius: 50%; background: #34d399;
+      transform: translateX(-50%);
+    }
+
+    .portrait {
+      width: 300px; height: 400px;
+      border-radius: 2rem;
+      background: linear-gradient(135deg,#111113 0%,#18181b 100%);
+      border: 1px solid #27272a; position: relative; overflow: hidden;
+    }
+    @media(min-width:768px) { .portrait { width: 360px; height: 480px; } }
+
+    .fc {
+      position: absolute;
+      background: rgba(15,15,17,.92);
+      border: 1px solid #27272a; border-radius: .875rem;
+      padding: .85rem 1rem;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Nav links: hidden on mobile, flex on desktop */
+    #nav-links { display: none !important; }
+    @media(min-width:768px) { #nav-links { display: flex !important; } }
+
+    @media(max-width:767px) {
+      .md-hide { display: none !important; }
+
+      /* Portrait floating cards – prevent horizontal overflow */
+      .fc { display: none !important; }
+
+      /* Portrait itself: shrink to fit */
+      .portrait { width: 100% !important; max-width: 300px; height: 280px !important; }
+
+      /* Stat grid: 2 cols on mobile */
+      .stat-cell { padding: 1.25rem 1.25rem; }
+
+      /* Project cards: reduce padding */
+      .proj-pad { padding: 1.5rem !important; }
+
+      /* Edge rows: stack icon + text + stat vertically */
+      .er { flex-direction: column !important; gap: .875rem !important; }
+      .er-stat { display: none !important; }
+
+      /* EF grid: force single column */
+      #ef-grid { grid-template-columns: 1fr !important; }
+
+      /* Section horizontal padding */
+      #edge-grid > div,
+      #ef-grid > div { padding: 1.5rem !important; }
+
+      /* Timeline: trim left padding */
+      .tl-row { padding-left: 1.25rem !important; }
+
+      /* Hero portrait area: hide on mobile — monogram without floating cards looks broken */
+      #hero-right { display: none !important; }
+
+      /* Contact grid single col */
+      #contact-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<body class="grain">
+
+<!-- NAV -->
+<nav class="fixed top-0 left-0 right-0 z-50 nav-glass">
+  <div style="max-width:1380px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;">
+    <a href="#" style="font-weight:900;font-size:1rem;letter-spacing:-.04em;color:#fafafa;text-decoration:none;">VS</a>
+    <div style="display:flex;align-items:center;gap:2rem;" class="md-show" id="nav-links">
+      <a href="#edge"     style="color:#71717a;font-size:.875rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fafafa'" onmouseout="this.style.color='#71717a'">My Edge</a>
+      <a href="#work"     style="color:#71717a;font-size:.875rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fafafa'" onmouseout="this.style.color='#71717a'">Ventures</a>
+      <a href="#impact"   style="color:#71717a;font-size:.875rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fafafa'" onmouseout="this.style.color='#71717a'">Track Record</a>
+      <a href="#contact"  style="color:#71717a;font-size:.875rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fafafa'" onmouseout="this.style.color='#71717a'">Contact</a>
+      <!-- Social icons -->
+      <div style="display:flex;align-items:center;gap:1rem;padding-left:.5rem;border-left:1px solid #27272a;">
+        <a href="https://www.linkedin.com/in/volo-shpodarunok-a32b132aa/" target="_blank" rel="noopener" style="color:#52525b;transition:color .2s;display:flex;" onmouseover="this.style.color='#fafafa'" onmouseout="this.style.color='#52525b'" aria-label="LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/chanhudjyon/" target="_blank" rel="noopener" style="color:#52525b;transition:color .2s;display:flex;" onmouseover="this.style.color='#fafafa'" onmouseout="this.style.color='#52525b'" aria-label="Instagram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        </a>
+      </div>
+    </div>
+    <a href="mailto:lviv.vai.self@gmail.com" class="btn-em">Get in touch</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section style="min-height:100dvh;padding-top:4.5rem;background:radial-gradient(ellipse 85% 65% at 72% 42%,rgba(16,185,129,.07) 0%,transparent 65%);">
+  <div style="max-width:1380px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;min-height:calc(100dvh - 4.5rem);">
+    <div style="width:100%;display:grid;grid-template-columns:1fr;gap:3rem;padding:4rem 0;" id="hero-grid">
+
+      <!-- Left -->
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .9rem;border-radius:999px;font-size:.72rem;font-weight:500;color:#34d399;border:1px solid rgba(52,211,153,.2);background:rgba(52,211,153,.05);margin-bottom:1.75rem;">
+          <span class="pdot" style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block;"></span>
+          18 · Entrepreneur · Vienna, Austria
+        </div>
+
+        <h1 style="font-size:clamp(2.5rem,6vw,4.8rem);font-weight:900;letter-spacing:-.04em;line-height:1.0;margin:0 0 1.5rem;">
+          Two companies<br>
+          <span style="color:#3f3f46;">before 19.</span>
+        </h1>
+
+        <p style="color:#a1a1aa;line-height:1.72;max-width:52ch;font-size:1rem;margin:0 0 2rem;">
+          I built an encrypted messenger that reached 7,000 users and an EdTech platform with 121 graduates —
+          both from scratch, while finishing high school. Now based in Vienna,
+          looking for the right co-founder and environment to build something much bigger.
+        </p>
+
+        <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:2.5rem;color:#52525b;font-size:.875rem;">
+          <span>Product.</span>
+          <span style="width:4px;height:4px;border-radius:50%;background:#3f3f46;display:inline-block;"></span>
+          <span>Distribution.</span>
+          <span style="width:4px;height:4px;border-radius:50%;background:#3f3f46;display:inline-block;"></span>
+          <span>Speed.</span>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;">
+          <a href="#edge" class="btn-em">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            See my edge
+          </a>
+          <a href="#contact" class="btn-ghost">Get in touch</a>
+        </div>
+      </div>
+
+      <!-- Right: Portrait -->
+      <div style="display:flex;justify-content:center;" id="hero-right">
+        <div class="floater" style="position:relative;filter:drop-shadow(0 40px 60px rgba(0,0,0,.55));">
+          <div class="portrait">
+            <!-- Grid pattern -->
+            <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(52,211,153,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(52,211,153,.04) 1px,transparent 1px);background-size:30px 30px;"></div>
+            <!-- Monogram -->
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;">
+              <div style="font-size:6.5rem;font-weight:900;letter-spacing:-.06em;color:#27272a;line-height:1;">VS</div>
+              <div style="font-size:.68rem;color:#3f3f46;letter-spacing:.14em;text-transform:uppercase;">Volodymyr Shpodarunok</div>
+            </div>
+            <!-- Bottom fade -->
+            <div style="position:absolute;bottom:0;left:0;right:0;height:38%;background:linear-gradient(to top,#09090b,transparent);"></div>
+          </div>
+
+          <!-- Floating cards -->
+          <div class="fc" style="left:-3.25rem;bottom:3.5rem;">
+            <div class="em-text" style="font-size:1.55rem;font-weight:900;line-height:1;">7,000+</div>
+            <div style="font-size:.67rem;color:#52525b;margin-top:.2rem;">Bridge Messenger users</div>
+          </div>
+          <div class="fc" style="right:-1.25rem;top:2.25rem;">
+            <div style="font-size:1.35rem;font-weight:900;line-height:1;color:#fafafa;">2×</div>
+            <div style="font-size:.67rem;color:#52525b;margin-top:.2rem;">Accelerator finalist</div>
+          </div>
+          <div class="fc" style="right:-1.25rem;bottom:1.75rem;">
+            <div style="font-size:1.35rem;font-weight:900;line-height:1;color:#fafafa;">$15k</div>
+            <div style="font-size:.67rem;color:#52525b;margin-top:.2rem;">Armed Forces fundraiser</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div style="border-top:1px solid #1a1a1c;border-bottom:1px solid #1a1a1c;padding:.8rem 0;overflow:hidden;">
+  <div class="marquee-track">
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">7,000+ users</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">121 graduates</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">2M social reach</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">$15k raised for Armed Forces of Ukraine</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">170k Unsplash views</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">40+ events organized</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">4 languages</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">Notre Dame accelerator finalist</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <!-- duplicate for seamless loop -->
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">7,000+ users</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">121 graduates</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">2M social reach</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">$15k raised for Armed Forces of Ukraine</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">170k Unsplash views</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">40+ events organized</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">4 languages</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+    <span style="color:#3f3f46;font-size:.78rem;margin-right:1.75rem;">Notre Dame accelerator finalist</span><span style="color:#34d399;margin-right:1.75rem;">&#8226;</span>
+  </div>
+</div>
+
+<!-- EDGE -->
+<section id="edge" style="padding:5.5rem 0;background:rgba(15,15,16,.65);">
+  <div style="max-width:1380px;margin:0 auto;padding:0 2rem;">
+    <div class="reveal" style="margin-bottom:3.5rem;">
+      <div class="eyebrow"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block;"></span>My Edge</div>
+      <h2 style="font-size:clamp(1.9rem,4vw,3.2rem);font-weight:900;letter-spacing:-.04em;line-height:1.05;margin:0;">
+        Why I'm different<br><span style="color:#3f3f46;">from other founders.</span>
+      </h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr;gap:1rem;" id="edge-grid">
+
+      <div class="reveal rd1" style="padding:2rem 2.5rem;border:1px solid #1f1f23;border-radius:1.5rem;background:#111113;">
+        <div class="er" style="display:flex;align-items:flex-start;gap:1.5rem;flex-wrap:wrap;">
+          <div style="width:2.75rem;height:2.75rem;border-radius:.875rem;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.75"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <div style="font-weight:700;font-size:1.05rem;margin-bottom:.6rem;">I ship fast — and I don't stop.</div>
+            <p style="color:#71717a;line-height:1.75;font-size:.92rem;margin:0;max-width:62ch;">
+              Bridge Messenger: zero to 7,000 users in 14 months. NMT.Academy: zero to 121 paying students in 12 months.
+              Both built with no external funding, no team, and while finishing my final year of school with a 10.47 GPA.
+              I don't wait for perfect conditions — I start and iterate.
+            </p>
+          </div>
+          <div class="er-stat" style="text-align:right;flex-shrink:0;">
+            <div style="font-size:1.6rem;font-weight:900;color:#34d399;line-height:1;">14 mo</div>
+            <div style="font-size:.68rem;color:#52525b;margin-top:.2rem;">zero → 7k users</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal rd2" style="padding:2rem 2.5rem;border:1px solid #1f1f23;border-radius:1.5rem;background:#111113;">
+        <div class="er" style="display:flex;align-items:flex-start;gap:1.5rem;flex-wrap:wrap;">
+          <div style="width:2.75rem;height:2.75rem;border-radius:.875rem;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <div style="font-weight:700;font-size:1.05rem;margin-bottom:.6rem;">I know markets most founders ignore.</div>
+            <p style="color:#71717a;line-height:1.75;font-size:.92rem;margin:0;max-width:62ch;">
+              I built for Eastern Europe's 40M+ underserved users — low-bandwidth environments, post-Soviet education systems, conflict-zone communication needs.
+              These aren't niche problems. They're early signals of massive global needs that Western founders consistently overlook.
+              I have the cultural context and lived experience to build there credibly.
+            </p>
+          </div>
+          <div class="er-stat" style="text-align:right;flex-shrink:0;">
+            <div style="font-size:1.6rem;font-weight:900;color:#60a5fa;line-height:1;">40M+</div>
+            <div style="font-size:.68rem;color:#52525b;margin-top:.2rem;">underserved users</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal rd3" style="padding:2rem 2.5rem;border:1px solid #1f1f23;border-radius:1.5rem;background:#111113;">
+        <div class="er" style="display:flex;align-items:flex-start;gap:1.5rem;flex-wrap:wrap;">
+          <div style="width:2.75rem;height:2.75rem;border-radius:.875rem;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="1.75"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <div style="flex:1;min-width:200px;">
+            <div style="font-weight:700;font-size:1.05rem;margin-bottom:.6rem;">I design the product and talk to the user — at the same time.</div>
+            <p style="color:#71717a;line-height:1.75;font-size:.92rem;margin:0;max-width:62ch;">
+              As CPO of Bridge and CEO of NMT.Academy, I owned both the product and the customer.
+              I did the design in Figma, ran user interviews, iterated on positioning, and managed growth — often on the same day.
+              This combination — product depth plus distribution instinct — is rare at any age.
+            </p>
+          </div>
+          <div class="er-stat" style="text-align:right;flex-shrink:0;">
+            <div style="font-size:1.6rem;font-weight:900;color:#fb923c;line-height:1;">CPO+CEO</div>
+            <div style="font-size:.68rem;color:#52525b;margin-top:.2rem;">product + growth</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+<section id="impact" style="padding:5.5rem 0;">
+  <div style="max-width:1380px;margin:0 auto;padding:0 2rem;">
+    <div class="reveal" style="margin-bottom:3.5rem;">
+      <div class="eyebrow"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block;"></span>Track Record</div>
+      <h2 style="font-size:clamp(1.9rem,4vw,3.2rem);font-weight:900;letter-spacing:-.04em;line-height:1.05;margin:0;">
+        Numbers that<br><span style="color:#3f3f46;">don't lie.</span>
+      </h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);border:1px solid #1f1f23;border-radius:1.5rem;overflow:hidden;" id="stat-grid">
+      <div class="stat-cell reveal rd1">
+        <div class="em-text" style="font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;line-height:1;">7,000+</div>
+        <div style="color:#52525b;font-size:.78rem;margin-top:.35rem;">Bridge Messenger users</div>
+      </div>
+      <div class="stat-cell reveal rd2">
+        <div class="em-text" style="font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;line-height:1;">121</div>
+        <div style="color:#52525b;font-size:.78rem;margin-top:.35rem;">NMT Academy graduates</div>
+      </div>
+      <div class="stat-cell reveal rd3">
+        <div class="em-text" style="font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;line-height:1;">2M</div>
+        <div style="color:#52525b;font-size:.78rem;margin-top:.35rem;">Social media reach</div>
+      </div>
+      <div class="stat-cell reveal rd4" style="border-right:none;">
+        <div class="em-text" style="font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;line-height:1;">$15k</div>
+        <div style="color:#52525b;font-size:.78rem;margin-top:.35rem;">Raised for Armed Forces</div>
+      </div>
+      <div class="stat-cell reveal rd1" style="border-bottom:none;">
+        <div class="em-text" style="font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;line-height:1;">170k</div>
+        <div style="color:#52525b;font-size:.78rem;margin-top:.35rem;">Unsplash views</div>
+      </div>
+      <div class="stat-cell reveal rd2" style="border-bottom:none;">
+        <div class="em-text" style="font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;line-height:1;">2×</div>
+        <div style="color:#52525b;font-size:.78rem;margin-top:.35rem;">Accelerator finalist</div>
+      </div>
+      <div class="stat-cell reveal rd3" style="border-bottom:none;">
+        <div class="em-text" style="font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;line-height:1;">15+</div>
+        <div style="color:#52525b;font-size:.78rem;margin-top:.35rem;">Media mentions</div>
+      </div>
+      <div class="stat-cell reveal rd4" style="border-right:none;border-bottom:none;">
+        <div class="em-text" style="font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;line-height:1;">40+</div>
+        <div style="color:#52525b;font-size:.78rem;margin-top:.35rem;">Events organized</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work" style="padding:5.5rem 0;background:rgba(15,15,16,.65);">
+  <div style="max-width:1380px;margin:0 auto;padding:0 2rem;">
+    <div class="reveal" style="margin-bottom:3.5rem;">
+      <div class="eyebrow"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block;"></span>Ventures</div>
+      <h2 style="font-size:clamp(1.9rem,4vw,3.2rem);font-weight:900;letter-spacing:-.04em;line-height:1.05;margin:0;">
+        What I've built —<br><span style="color:#3f3f46;">and what I learned.</span>
+      </h2>
+    </div>
+
+    <!-- Bridge Messenger -->
+    <div class="reveal proj" style="margin-bottom:1rem;">
+      <div class="proj-pad" style="padding:2.5rem 3rem;">
+        <div style="display:grid;grid-template-columns:1fr;gap:2.5rem;" id="bridge-grid">
+          <div>
+            <div style="display:flex;align-items:center;gap:.875rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+              <div style="width:2.6rem;height:2.6rem;border-radius:.75rem;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.75"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:700;font-size:1rem;">Bridge Messenger</div>
+                <div style="font-size:.68rem;color:#52525b;">CPO & Co-founder</div>
+              </div>
+              <span style="margin-left:auto;font-size:.68rem;color:#3f3f46;">Jul 2024 – Sep 2025</span>
+            </div>
+            <div style="margin-bottom:1rem;padding:.75rem 1rem;border-left:2px solid #60a5fa;background:rgba(96,165,250,.04);border-radius:0 .5rem .5rem 0;">
+              <div style="font-size:.68rem;color:#60a5fa;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem;">The insight</div>
+              <div style="font-size:.88rem;color:#a1a1aa;line-height:1.6;">40M+ workers in Eastern Europe operate in low-bandwidth environments where mainstream messengers fail. We built for them — secure, lightweight, offline-first.</div>
+            </div>
+            <p style="color:#71717a;line-height:1.75;margin-bottom:.75rem;max-width:56ch;font-size:.92rem;">
+              As CPO, I owned the full product: UX, feature prioritisation, go-to-market. We became the
+              <strong style="color:#a1a1aa;font-weight:600;">first team ever</strong> to complete the UCU Startup Accelerator while still in high school —
+              running the programme alongside final exams and 27 hours of weekly tutoring sessions I ran myself.
+            </p>
+            <div style="margin-bottom:1.25rem;padding:.75rem 1rem;border-left:2px solid #3f3f46;background:rgba(63,63,70,.06);border-radius:0 .5rem .5rem 0;">
+              <div style="font-size:.68rem;color:#71717a;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem;">What I learned</div>
+              <div style="font-size:.88rem;color:#71717a;line-height:1.6;">Distribution beats features. We grew to 7k users through community trust, not ads. And hardware constraints force better product decisions than unlimited resources ever would.</div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:.375rem;">
+              <span class="tag">Product Strategy</span>
+              <span class="tag">UI/UX Design</span>
+              <span class="tag">Secure Comms</span>
+              <span class="tag">UCU Accelerator</span>
+              <span class="tag">Top-10 / 147 teams</span>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:.7rem;" id="bridge-stats">
+            <div style="padding:1.2rem 1.5rem;background:#0d0d0f;border:1px solid #1f1f23;border-radius:1rem;">
+              <div style="font-size:1.9rem;font-weight:900;color:#60a5fa;">7,000+</div>
+              <div style="font-size:.7rem;color:#52525b;margin-top:.2rem;">Active users at peak</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;">
+              <div style="padding:.9rem 1rem;background:#0d0d0f;border:1px solid #1f1f23;border-radius:.875rem;">
+                <div style="font-weight:700;font-size:.9rem;">Top-10</div>
+                <div style="font-size:.65rem;color:#52525b;margin-top:.2rem;">of 147 teams, IdeasLab</div>
+              </div>
+              <div style="padding:.9rem 1rem;background:#0d0d0f;border:1px solid #1f1f23;border-radius:.875rem;">
+                <div style="font-weight:700;font-size:.9rem;">Notre Dame</div>
+                <div style="font-size:.65rem;color:#52525b;margin-top:.2rem;">Youngest finalist team</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NMT Academy -->
+    <div class="reveal proj" style="margin-bottom:1rem;">
+      <div class="proj-pad" style="padding:2.5rem 3rem;">
+        <div style="display:grid;grid-template-columns:1fr;gap:2.5rem;" id="nmt-grid">
+          <div style="display:flex;flex-direction:column;gap:.7rem;order:2;" id="nmt-stats">
+            <div style="padding:1.2rem 1.5rem;background:#0d0d0f;border:1px solid #1f1f23;border-radius:1rem;">
+              <div style="font-size:1.9rem;font-weight:900;color:#34d399;">121</div>
+              <div style="font-size:.7rem;color:#52525b;margin-top:.2rem;">Students successfully guided</div>
+            </div>
+            <div style="padding:.9rem 1.2rem;background:#0d0d0f;border:1px solid #1f1f23;border-radius:.875rem;">
+              <div style="font-weight:700;">Top national ranking</div>
+              <div style="font-size:.68rem;color:#52525b;margin-top:.2rem;">Students reached #2 in History exam results nationwide</div>
+            </div>
+            <div style="padding:.9rem 1.2rem;background:rgba(52,211,153,.05);border:1px solid rgba(52,211,153,.15);border-radius:.875rem;font-size:.76rem;color:#6ee7b7;line-height:1.55;">
+              Transitioning from niche solution to scalable EdTech platform.
+            </div>
+          </div>
+          <div style="order:1;">
+            <div style="display:flex;align-items:center;gap:.875rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+              <div style="width:2.6rem;height:2.6rem;border-radius:.75rem;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.75"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:700;font-size:1rem;">NMT.Academy</div>
+                <div style="font-size:.68rem;color:#52525b;">CEO & Co-founder</div>
+              </div>
+              <span style="margin-left:auto;font-size:.68rem;color:#3f3f46;">Jul 2024 – Present</span>
+            </div>
+            <div style="margin-bottom:1rem;padding:.75rem 1rem;border-left:2px solid #34d399;background:rgba(52,211,153,.04);border-radius:0 .5rem .5rem 0;">
+              <div style="font-size:.68rem;color:#34d399;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem;">The insight</div>
+              <div style="font-size:.88rem;color:#a1a1aa;line-height:1.6;">350,000+ Ukrainian students sit the NMT exam each year. Existing prep is generic and offline. We built a data-driven, simulation-first platform that adapts to each student's weak spots.</div>
+            </div>
+            <p style="color:#71717a;line-height:1.75;margin-bottom:.75rem;max-width:56ch;font-size:.92rem;">
+              Started as a side project while running Bridge — one teacher, one subject. Grew organically through results:
+              our school reached <strong style="color:#a1a1aa;font-weight:600;">#2 in Ukraine</strong> for History NMT scores.
+              Now expanding faculty to make the platform nationwide.
+            </p>
+            <div style="margin-bottom:1.25rem;padding:.75rem 1rem;border-left:2px solid #3f3f46;background:rgba(63,63,70,.06);border-radius:0 .5rem .5rem 0;">
+              <div style="font-size:.68rem;color:#71717a;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem;">What I learned</div>
+              <div style="font-size:.88rem;color:#71717a;line-height:1.6;">Measurable outcomes are the only marketing you need in education. Every student who scored well became a referral. Build the result, the growth follows.</div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:.375rem;">
+              <span class="tag">EdTech</span>
+              <span class="tag">Product Design</span>
+              <span class="tag">Exam Simulation</span>
+              <span class="tag">Outcome-led Growth</span>
+              <span class="tag">Nationwide Scale</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Freelance Design -->
+    <div class="reveal proj">
+      <div style="padding:2rem 3rem;display:flex;align-items:flex-start;gap:2rem;flex-wrap:wrap;">
+        <div style="width:2.6rem;height:2.6rem;border-radius:.75rem;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.15rem;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="1.75"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:700;font-size:1rem;margin-bottom:.2rem;">Freelance UI/UX Designer</div>
+          <div style="font-size:.68rem;color:#52525b;margin-bottom:.875rem;">Self-Employed · Jun 2024 – Present</div>
+          <p style="color:#71717a;line-height:1.75;max-width:56ch;font-size:.92rem;margin:0;">
+            Delivering professional UI/UX design, brand systems, packaging, and digital assets for
+            international clients via Figma and Adobe Creative Suite.
+          </p>
+        </div>
+        <div style="display:flex;gap:2rem;flex-shrink:0;text-align:right;">
+          <div>
+            <div style="font-size:1.75rem;font-weight:900;color:#fb923c;">22k</div>
+            <div style="font-size:.68rem;color:#52525b;">Behance views</div>
+          </div>
+          <div>
+            <div style="font-size:1.75rem;font-weight:900;color:#fb923c;">170k</div>
+            <div style="font-size:.68rem;color:#52525b;">Unsplash views</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section style="padding:5.5rem 0;">
+  <div style="max-width:1380px;margin:0 auto;padding:0 2rem;">
+    <div class="reveal" style="margin-bottom:3.5rem;">
+      <div class="eyebrow"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block;"></span>Timeline</div>
+      <h2 style="font-size:clamp(1.9rem,4vw,3.2rem);font-weight:900;letter-spacing:-.04em;line-height:1.05;margin:0;">
+        Building since<br><span style="color:#3f3f46;">day one.</span>
+      </h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr;gap:1.5rem;" id="tl-grid">
+      <div class="reveal rd1">
+        <div class="tl-row">
+          <div style="font-size:.68rem;color:#52525b;margin-bottom:.2rem;">Mar 2026 – Jan 2027</div>
+          <div style="font-weight:600;font-size:.92rem;margin-bottom:.3rem;">Entrepreneurial Leadership Program, Vienna</div>
+          <div style="font-size:.82rem;color:#71717a;line-height:1.6;">Selected for an intensive one-year program in Vienna — leadership, business fundamentals, professional networking.</div>
+        </div>
+        <div class="tl-row">
+          <div style="font-size:.68rem;color:#52525b;margin-bottom:.2rem;">May – Jul 2025</div>
+          <div style="font-weight:600;font-size:.92rem;margin-bottom:.3rem;">Race to Revenue — University of Notre Dame</div>
+          <div style="font-size:.82rem;color:#71717a;line-height:1.6;">Youngest finalist team in Notre Dame's intensive entrepreneurship accelerator. South Bend, IN.</div>
+        </div>
+        <div class="tl-row">
+          <div style="font-size:.68rem;color:#52525b;margin-bottom:.2rem;">2025</div>
+          <div style="font-weight:600;font-size:.92rem;margin-bottom:.3rem;">IdeasLab UCU — TOP-10 Startup</div>
+          <div style="font-size:.82rem;color:#71717a;line-height:1.6;">Ranked TOP-10 among 147 teams. Validated market strategy and business modeling for Bridge Messenger.</div>
+        </div>
+      </div>
+
+      <div class="reveal rd2">
+        <div class="tl-row">
+          <div style="font-size:.68rem;color:#52525b;margin-bottom:.2rem;">Feb 2026 – Jan 2027</div>
+          <div style="font-weight:600;font-size:.92rem;margin-bottom:.3rem;">Youth Advisory — KidsKonnectUkraine</div>
+          <div style="font-size:.82rem;color:#71717a;line-height:1.6;">Strategic insights for global initiatives connecting and empowering Ukrainian youth worldwide (remote).</div>
+        </div>
+        <div class="tl-row">
+          <div style="font-size:.68rem;color:#52525b;margin-bottom:.2rem;">Oct 2023 – Oct 2024</div>
+          <div style="font-weight:600;font-size:.92rem;margin-bottom:.3rem;">Student Parliament President</div>
+          <div style="font-size:.82rem;color:#71717a;line-height:1.6;">Led 100+ members, organized 40+ events, raised $15k for Armed Forces of Ukraine. Awarded "Voice of the Gymnasium."</div>
+        </div>
+        <div class="tl-row">
+          <div style="font-size:.68rem;color:#52525b;margin-bottom:.2rem;">2025 – Present</div>
+          <div style="font-weight:600;font-size:.92rem;margin-bottom:.3rem;">German B1–B2 — Sprachenzentrum, University of Vienna</div>
+          <div style="font-size:.82rem;color:#71717a;line-height:1.6;">Intensive German language studies at the University of Vienna's language centre.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTOGRAPHY -->
+<section id="creative" style="padding:5.5rem 0;background:rgba(15,15,16,.65);">
+  <div style="max-width:1380px;margin:0 auto;padding:0 2rem;">
+    <div style="display:grid;grid-template-columns:1fr;gap:2.5rem;margin-bottom:3rem;" id="photo-header">
+      <div class="reveal">
+        <div class="eyebrow"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block;"></span>Photography</div>
+        <h2 style="font-size:clamp(1.9rem,4vw,3.2rem);font-weight:900;letter-spacing:-.04em;line-height:1.05;margin:0;">
+          Seeing the world<br><span style="color:#3f3f46;">through a lens.</span>
+        </h2>
+      </div>
+      <div class="reveal rd1" style="display:flex;align-items:flex-end;">
+        <p style="color:#71717a;line-height:1.75;font-size:.92rem;max-width:50ch;margin:0;">
+          Photography is a deliberate exercise in attention — whether documenting foggy Lviv streets
+          or Venice's chaos. The same visual discipline shapes how I design products.
+          Composition matters. Perspective changes everything.
+        </p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr;gap:1rem;" id="photo-grid">
+      <div class="reveal rd1 photo-box" style="aspect-ratio:16/9;grid-column:span 2 / span 2;" id="photo-venice">
+        <img src="https://picsum.photos/seed/venice_gothic_church/1400/788" alt="Venice, Italy" loading="lazy">
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(to top,rgba(9,9,11,.88),transparent);">
+          <div style="font-weight:600;font-size:.9rem;">Venice, Italy</div>
+          <div style="font-size:.68rem;color:#71717a;margin-top:.2rem;">7,867 views on Unsplash</div>
+        </div>
+      </div>
+      <div class="reveal rd2 photo-box" style="aspect-ratio:4/5;" id="photo-lviv">
+        <img src="https://picsum.photos/seed/lviv_evening_tram_dark/600/750" alt="Lviv, Ukraine" loading="lazy">
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(to top,rgba(9,9,11,.88),transparent);">
+          <div style="font-weight:600;font-size:.9rem;">Lviv, Ukraine</div>
+          <div style="font-size:.68rem;color:#71717a;margin-top:.2rem;">31,237 views on Unsplash</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top:1rem;display:flex;align-items:center;justify-content:space-between;padding:1.4rem 2rem;border:1px solid #1f1f23;border-radius:1.25rem;background:#111113;">
+      <div>
+        <div style="font-weight:600;">Featured on Unsplash</div>
+        <div style="font-size:.78rem;color:#52525b;margin-top:.2rem;">Photography collections · worldwide audience</div>
+      </div>
+      <div class="em-text" style="font-size:2.1rem;font-weight:900;">170k+</div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section style="padding:5.5rem 0;">
+  <div style="max-width:1380px;margin:0 auto;padding:0 2rem;">
+    <div class="reveal" style="margin-bottom:3.5rem;">
+      <div class="eyebrow"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block;"></span>Toolkit</div>
+      <h2 style="font-size:clamp(1.9rem,4vw,3.2rem);font-weight:900;letter-spacing:-.04em;line-height:1.05;margin:0;">
+        Tools of the trade.
+      </h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr;gap:3rem;" id="skills-grid">
+
+      <div class="reveal rd1">
+        <div style="font-size:.68rem;color:#52525b;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid #1a1a1c;">Design</div>
+        <div>
+          <div style="display:flex;align-items:center;gap:.75rem;padding:.8rem 0;border-bottom:1px solid #151517;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#34d399;flex-shrink:0;"></div>
+            <span style="color:#d4d4d8;font-size:.88rem;">Figma</span>
+            <span style="margin-left:auto;font-size:.7rem;color:#3f3f46;">UI/UX · Brand Systems</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;padding:.8rem 0;border-bottom:1px solid #151517;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#34d399;flex-shrink:0;"></div>
+            <span style="color:#d4d4d8;font-size:.88rem;">Photoshop</span>
+            <span style="margin-left:auto;font-size:.7rem;color:#3f3f46;">Photo editing</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;padding:.8rem 0;border-bottom:1px solid #151517;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#34d399;flex-shrink:0;"></div>
+            <span style="color:#d4d4d8;font-size:.88rem;">Lightroom</span>
+            <span style="margin-left:auto;font-size:.7rem;color:#3f3f46;">Photography</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;padding:.8rem 0;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#34d399;flex-shrink:0;"></div>
+            <span style="color:#d4d4d8;font-size:.88rem;">Adobe Illustrator</span>
+            <span style="margin-left:auto;font-size:.7rem;color:#3f3f46;">Packaging · Identity</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal rd2">
+        <div style="font-size:.68rem;color:#52525b;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid #1a1a1c;">Production</div>
+        <div>
+          <div style="display:flex;align-items:center;gap:.75rem;padding:.8rem 0;border-bottom:1px solid #151517;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#60a5fa;flex-shrink:0;"></div>
+            <span style="color:#d4d4d8;font-size:.88rem;">Premiere Pro</span>
+            <span style="margin-left:auto;font-size:.7rem;color:#3f3f46;">Video editing</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;padding:.8rem 0;border-bottom:1px solid #151517;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#60a5fa;flex-shrink:0;"></div>
+            <span style="color:#d4d4d8;font-size:.88rem;">After Effects</span>
+            <span style="margin-left:auto;font-size:.7rem;color:#3f3f46;">Motion graphics</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;padding:.8rem 0;border-bottom:1px solid #151517;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#60a5fa;flex-shrink:0;"></div>
+            <span style="color:#d4d4d8;font-size:.88rem;">VS Code</span>
+            <span style="margin-left:auto;font-size:.7rem;color:#3f3f46;">Web development</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;padding:.8rem 0;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#60a5fa;flex-shrink:0;"></div>
+            <span style="color:#d4d4d8;font-size:.88rem;">AI Workflow Automation</span>
+            <span style="margin-left:auto;font-size:.7rem;color:#3f3f46;">Productivity</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal rd3">
+        <div style="font-size:.68rem;color:#52525b;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid #1a1a1c;">Languages</div>
+        <div>
+          <div style="display:flex;align-items:center;gap:.75rem;padding:.8rem 0;border-bottom:1px solid #151517;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#fb923c;flex-shrink:0;"></div>
+            <span style="color:#d4d4d8;font-size:.88rem;">Ukrainian</span>
+            <span style="margin-left:auto;font-size:.7rem;color:#3f3f46;">Native</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;padding:.8rem 0;border-bottom:1px solid #151517;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#fb923c;flex-shrink:0;"></div>
+            <span style="color:#d4d4d8;font-size:.88rem;">English</span>
+            <span style="margin-left:auto;font-size:.7rem;color:#3f3f46;">C1 — Advanced</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;padding:.8rem 0;border-bottom:1px solid #151517;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#fb923c;flex-shrink:0;"></div>
+            <span style="color:#d4d4d8;font-size:.88rem;">German</span>
+            <span style="margin-left:auto;font-size:.7rem;color:#3f3f46;">B2 — Ongoing</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;padding:.8rem 0;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#fb923c;flex-shrink:0;"></div>
+            <span style="color:#d4d4d8;font-size:.88rem;">Russian</span>
+            <span style="margin-left:auto;font-size:.7rem;color:#3f3f46;">Native</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- LOOKING FOR -->
+<section style="padding:5.5rem 0;background:rgba(15,15,16,.65);">
+  <div style="max-width:1380px;margin:0 auto;padding:0 2rem;">
+    <div class="reveal" style="margin-bottom:3rem;">
+      <div class="eyebrow"><span style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block;"></span>Co-founder profile</div>
+      <h2 style="font-size:clamp(1.9rem,4vw,3.2rem);font-weight:900;letter-spacing:-.04em;line-height:1.05;margin:0;">
+        What I bring.<br><span style="color:#3f3f46;">What I'm looking for.</span>
+      </h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr;gap:1rem;" id="ef-grid">
+
+      <div class="reveal rd1" style="padding:2rem 2.5rem;border:1px solid #1f1f23;border-radius:1.5rem;background:#111113;">
+        <div style="font-size:.68rem;color:#34d399;font-weight:600;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">I bring</div>
+        <div style="display:flex;flex-direction:column;gap:.75rem;">
+          <div style="display:flex;align-items:flex-start;gap:.875rem;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#34d399;flex-shrink:0;margin-top:.45rem;"></div>
+            <div style="font-size:.92rem;color:#d4d4d8;line-height:1.6;"><strong style="color:#fafafa;">Product velocity</strong> — I can take an idea from whiteboard to working prototype in days, and to first users in weeks.</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.875rem;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#34d399;flex-shrink:0;margin-top:.45rem;"></div>
+            <div style="font-size:.92rem;color:#d4d4d8;line-height:1.6;"><strong style="color:#fafafa;">Market intuition</strong> — Deep knowledge of Eastern European, CIS, and post-Soviet consumer and B2B markets — underserved segments most founders overlook entirely.</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.875rem;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#34d399;flex-shrink:0;margin-top:.45rem;"></div>
+            <div style="font-size:.92rem;color:#d4d4d8;line-height:1.6;"><strong style="color:#fafafa;">Distribution-first thinking</strong> — Both my companies grew through community and outcomes, not paid channels. I know how to build products people talk about.</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.875rem;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#34d399;flex-shrink:0;margin-top:.45rem;"></div>
+            <div style="font-size:.92rem;color:#d4d4d8;line-height:1.6;"><strong style="color:#fafafa;">Execution under pressure</strong> — Two companies, no funding, during high school. I know how to prioritise when resources are zero.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal rd2" style="padding:2rem 2.5rem;border:1px solid #1f1f23;border-radius:1.5rem;background:#111113;">
+        <div style="font-size:.68rem;color:#60a5fa;font-weight:600;text-transform:uppercase;letter-spacing:.1em;margin-bottom:1rem;">I'm looking for</div>
+        <div style="display:flex;flex-direction:column;gap:.75rem;">
+          <div style="display:flex;align-items:flex-start;gap:.875rem;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#60a5fa;flex-shrink:0;margin-top:.45rem;"></div>
+            <div style="font-size:.92rem;color:#d4d4d8;line-height:1.6;">A <strong style="color:#fafafa;">technical co-founder</strong> with depth in engineering — ideally someone building in AI, data infrastructure, or developer tools — who complements my product and GTM strengths.</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.875rem;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#60a5fa;flex-shrink:0;margin-top:.45rem;"></div>
+            <div style="font-size:.92rem;color:#d4d4d8;line-height:1.6;">Someone who moves <strong style="color:#fafafa;">as fast as I do</strong> — who treats the first few months as a sprint to find the right problem, not a slow deliberation.</div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:.875rem;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#60a5fa;flex-shrink:0;margin-top:.45rem;"></div>
+            <div style="font-size:.92rem;color:#d4d4d8;line-height:1.6;">Someone <strong style="color:#fafafa;">ambitious about scope</strong> — not optimising for a small exit, but genuinely trying to build something that changes how a large number of people work or learn.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="padding:5.5rem 0;border-top:1px solid #1a1a1c;">
+  <div style="max-width:1380px;margin:0 auto;padding:0 2rem;">
+
+    <div style="display:grid;grid-template-columns:1fr;gap:3rem;margin-bottom:4rem;" id="contact-grid">
+      <div class="reveal">
+        <h2 style="font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;letter-spacing:-.04em;line-height:1.0;margin:0 0 1.5rem;">
+          Let's build<br>
+          <span style="color:#34d399;">something real.</span>
+        </h2>
+        <p style="color:#71717a;line-height:1.75;max-width:44ch;font-size:.92rem;margin:0 0 1.25rem;">
+          Open to accelerator programs, co-founder conversations, advisory relationships, and angel introductions.
+          Based in Vienna — available globally.
+        </p>
+        <p style="color:#52525b;line-height:1.75;max-width:44ch;font-size:.85rem;margin:0;">
+          Especially interested in EdTech, secure communications, productivity tools, and emerging European markets.
+        </p>
+      </div>
+
+      <div class="reveal rd1" style="display:flex;flex-direction:column;gap:.7rem;">
+        <a href="mailto:lviv.vai.self@gmail.com" class="row-link">
+          <div>
+            <div style="font-size:.65rem;color:#3f3f46;margin-bottom:.2rem;">Email</div>
+            <div style="color:#d4d4d8;font-size:.88rem;">lviv.vai.self@gmail.com</div>
+          </div>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.75"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <div class="row-link">
+          <div>
+            <div style="font-size:.65rem;color:#3f3f46;margin-bottom:.2rem;">Phone / Messenger</div>
+            <div style="color:#d4d4d8;font-size:.88rem;">+43 677 630 76210</div>
+          </div>
+        </div>
+        <div class="row-link">
+          <div>
+            <div style="font-size:.65rem;color:#3f3f46;margin-bottom:.2rem;">Also reachable at</div>
+            <div style="color:#d4d4d8;font-size:.88rem;">+380 98 234 54 99 (UA messengers)</div>
+          </div>
+        </div>
+        <div class="row-link">
+          <div>
+            <div style="font-size:.65rem;color:#3f3f46;margin-bottom:.2rem;">Location</div>
+            <div style="color:#d4d4d8;font-size:.88rem;">Vienna, Austria</div>
+          </div>
+        </div>
+        <a href="https://www.linkedin.com/in/volo-shpodarunok-a32b132aa/" target="_blank" rel="noopener" class="row-link">
+          <div>
+            <div style="font-size:.65rem;color:#3f3f46;margin-bottom:.2rem;">LinkedIn</div>
+            <div style="color:#d4d4d8;font-size:.88rem;">Volo Shpodarunok</div>
+          </div>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.75"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="https://www.instagram.com/chanhudjyon/" target="_blank" rel="noopener" class="row-link">
+          <div>
+            <div style="font-size:.65rem;color:#3f3f46;margin-bottom:.2rem;">Instagram</div>
+            <div style="color:#d4d4d8;font-size:.88rem;">@chanhudjyon</div>
+          </div>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.75"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="padding-top:2rem;border-top:1px solid #1a1a1c;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+      <div style="color:#3f3f46;font-size:.78rem;">Volodymyr Shpodarunok &copy; 2026</div>
+      <div style="display:flex;gap:1rem;align-items:center;">
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com/in/volo-shpodarunok-a32b132aa/" target="_blank" rel="noopener" aria-label="LinkedIn" style="color:#3f3f46;transition:color .2s;display:flex;padding:.4rem;border-radius:.5rem;border:1px solid #1f1f23;" onmouseover="this.style.color='#fafafa';this.style.borderColor='#27272a'" onmouseout="this.style.color='#3f3f46';this.style.borderColor='#1f1f23'">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/chanhudjyon/" target="_blank" rel="noopener" aria-label="Instagram" style="color:#3f3f46;transition:color .2s;display:flex;padding:.4rem;border-radius:.5rem;border:1px solid #1f1f23;" onmouseover="this.style.color='#fafafa';this.style.borderColor='#27272a'" onmouseout="this.style.color='#3f3f46';this.style.borderColor='#1f1f23'">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+        </a>
+        <span style="color:#1f1f23;font-size:.75rem;">|</span>
+        <a href="https://unsplash.com/@lviv_vai_self" target="_blank" rel="noopener" style="color:#3f3f46;font-size:.75rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fafafa'" onmouseout="this.style.color='#3f3f46'">Unsplash</a>
+        <span style="color:#1f1f23;font-size:.75rem;">|</span>
+        <a href="https://behance.net" target="_blank" rel="noopener" style="color:#3f3f46;font-size:.75rem;text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#fafafa'" onmouseout="this.style.color='#3f3f46'">Behance</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.07, rootMargin: '0px 0px -36px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Responsive grid switches
+  function applyGrids() {
+    const w = window.innerWidth;
+    const d = w >= 768;
+
+    // Hero
+    const hg = document.getElementById('hero-grid');
+    if (hg) hg.style.gridTemplateColumns = d ? '1fr 1fr' : '1fr';
+
+    // Stat grid: 4 cols on desktop
+    const sg = document.getElementById('stat-grid');
+    if (sg) sg.style.gridTemplateColumns = d ? 'repeat(4,1fr)' : 'repeat(2,1fr)';
+
+    // Project: Bridge
+    const bg = document.getElementById('bridge-grid');
+    if (bg) {
+      bg.style.gridTemplateColumns = d ? '1fr 280px' : '1fr';
+      const bs = document.getElementById('bridge-stats');
+      if (bs) bs.style.order = d ? '2' : '';
+    }
+
+    // Project: NMT
+    const ng = document.getElementById('nmt-grid');
+    if (ng) {
+      ng.style.gridTemplateColumns = d ? '260px 1fr' : '1fr';
+      const ns = document.getElementById('nmt-stats');
+      if (ns) ns.style.order = d ? '1' : '2';
+      const nc = ng.querySelector('[style*="order:1"]');
+      if (nc && d) nc.style.order = '2';
+    }
+
+    // Timeline
+    const tlg = document.getElementById('tl-grid');
+    if (tlg) tlg.style.gridTemplateColumns = d ? '1fr 1fr' : '1fr';
+
+    // Photo header
+    const ph = document.getElementById('photo-header');
+    if (ph) ph.style.gridTemplateColumns = d ? '1fr 1fr' : '1fr';
+
+    // Photo grid
+    const pg = document.getElementById('photo-grid');
+    if (pg) {
+      pg.style.gridTemplateColumns = d ? '2fr 1fr' : '1fr';
+      const pv = document.getElementById('photo-venice');
+      if (pv) pv.style.gridColumn = d ? 'auto' : 'auto';
+    }
+
+    // Skills
+    const skl = document.getElementById('skills-grid');
+    if (skl) skl.style.gridTemplateColumns = d ? '1fr 1fr 1fr' : '1fr';
+
+    // Edge
+    const eg = document.getElementById('edge-grid');
+    if (eg) eg.style.gridTemplateColumns = '1fr';
+
+    // EF
+    const efg = document.getElementById('ef-grid');
+    if (efg) efg.style.gridTemplateColumns = d ? '1fr 1fr' : '1fr';
+
+    // Contact
+    const cg = document.getElementById('contact-grid');
+    if (cg) cg.style.gridTemplateColumns = d ? '1fr 1fr' : '1fr';
+  }
+
+  applyGrids();
+  window.addEventListener('resize', applyGrids);
+</script>
+
+</body>
+</html>
